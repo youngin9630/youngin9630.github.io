@@ -32,7 +32,9 @@ body {
 }
 
 .container {
-  height: 100vh;
+  height: calc(
+    100vh - 90px
+  ); /* 64px is the footer height (2rem padding top + 2rem padding bottom = 4rem = 64px) */
   overflow-y: scroll;
   overflow-x: hidden;
   perspective: 10px;
