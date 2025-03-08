@@ -15,12 +15,36 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
+  height: 100%;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.container {
+  height: 100vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  perspective: 10px;
+  scroll-behavior: smooth;
+}
+
+.scroll-container {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  transform-style: preserve-3d;
+  width: 500vw; /* 5 sections * 100vw */
 }
 
 /* Navigation */
@@ -66,14 +90,22 @@ body {
   color: var(--primary-color);
 }
 
-/* Hero Section */
-.hero {
+/* Panels */
+.panel {
+  position: relative;
+  width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: var(--light-bg);
   padding: 2rem;
+  transform-style: preserve-3d;
+}
+
+/* Hero Section */
+.hero {
+  background-color: var(--light-bg);
   text-align: center;
 }
 
