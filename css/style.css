@@ -15,20 +15,17 @@
 
 html {
   height: 100%;
-  overflow-x: hidden;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  height: 100vh;
   overflow-x: hidden;
 }
 
 .container {
   height: 500vh; /* 5 sections * 100vh */
-  position: relative;
 }
 
 .scroll-container {
@@ -38,7 +35,7 @@ body {
   width: 500vw; /* 5 sections * 100vw */
   height: 100vh;
   display: flex;
-  transition: transform 0.1s ease-out;
+  transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
 /* Navigation */

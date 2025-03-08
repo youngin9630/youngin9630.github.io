@@ -23,21 +23,42 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// Update horizontal scroll based on vertical scroll position
+// Track scroll position and update horizontal slide
+let lastScrollTop = 0;
+let ticking = false;
+
 window.addEventListener("scroll", () => {
-  const scrolled = window.scrollY;
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const percentScrolled = scrolled / maxScroll;
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const maxScroll = document.documentElement.scrollHeight - windowHeight;
 
-  // Calculate the target horizontal scroll position
-  const totalHorizontalScroll = (totalSections - 1) * window.innerWidth;
-  const targetHorizontalScroll = percentScrolled * totalHorizontalScroll;
+      // Calculate the progress (0 to 1)
+      const scrollProgress = scrollTop / maxScroll;
 
-  // Apply the transform with easing
-  scrollContainer.style.transform = `translate3d(${-targetHorizontalScroll}px, 0, 0)`;
+      // Calculate horizontal movement
+      const totalMove = (totalSections - 1) * window.innerWidth;
+      const moveX = totalMove * scrollProgress;
 
-  // Update navigation highlight
-  const currentSection = Math.round(percentScrolled * (totalSections - 1));
+      // Apply smooth transform
+      scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
+
+      // Update active section
+      const currentSection = Math.floor(scrollProgress * totalSections);
+      updateActiveSection(currentSection);
+
+      lastScrollTop = scrollTop;
+      ticking = false;
+    });
+
+    ticking = true;
+  }
+});
+
+// Update active section in navigation
+function updateActiveSection(currentSection) {
   document.querySelectorAll(".nav-links a").forEach((link, index) => {
     if (index === currentSection) {
       link.style.color = "var(--primary-color)";
@@ -45,18 +66,19 @@ window.addEventListener("scroll", () => {
       link.style.color = "var(--text-color)";
     }
   });
-});
+}
 
 // Handle window resize
 window.addEventListener("resize", () => {
-  const scrolled = window.scrollY;
-  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-  const percentScrolled = scrolled / maxScroll;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const windowHeight = window.innerHeight;
+  const maxScroll = document.documentElement.scrollHeight - windowHeight;
+  const scrollProgress = scrollTop / maxScroll;
 
-  const totalHorizontalScroll = (totalSections - 1) * window.innerWidth;
-  const targetHorizontalScroll = percentScrolled * totalHorizontalScroll;
+  const totalMove = (totalSections - 1) * window.innerWidth;
+  const moveX = totalMove * scrollProgress;
 
-  scrollContainer.style.transform = `translate3d(${-targetHorizontalScroll}px, 0, 0)`;
+  scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
 });
 
 // Add animation to skill items
