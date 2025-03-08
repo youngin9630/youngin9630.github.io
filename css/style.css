@@ -37,6 +37,7 @@ body {
 .container {
   height: calc(100vh - var(--footer-height));
   overflow-x: hidden;
+  overflow-y: hidden;
   perspective: 10px;
   position: relative;
   width: 100%;
