@@ -36,15 +36,14 @@ body {
 
 .container {
   height: calc(100vh - var(--navbar-height) - var(--footer-height));
-  overflow-y: scroll;
   overflow-x: hidden;
   perspective: 10px;
-  scroll-behavior: smooth;
   position: relative;
+  width: 100%;
 }
 
 .parallax-bg {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -60,6 +59,7 @@ body {
   background: url("../images/mountain-back.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-10px) scale(2);
+  animation: slide 60s linear infinite;
 }
 
 .mountain-mid {
@@ -70,6 +70,7 @@ body {
   background: url("../images/mountain-mid.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-5px) scale(1.5);
+  animation: slide 40s linear infinite;
 }
 
 .forest-front {
@@ -80,14 +81,24 @@ body {
   background: url("../images/forest-front.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-2px) scale(1.2);
+  animation: slide 20s linear infinite;
+}
+
+@keyframes slide {
+  from {
+    background-position: 0 bottom;
+  }
+  to {
+    background-position: -1920px bottom;
+  }
 }
 
 .scroll-container {
   position: relative;
-  display: flex;
   height: 100%;
   transform-style: preserve-3d;
   width: 500vw; /* 5 sections * 100vw */
+  display: flex;
 }
 
 /* Navigation */
@@ -143,12 +154,12 @@ body {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  transform-style: preserve-3d;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(5px);
+  /* background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px); */
   border-radius: 20px;
   margin: 2rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 /* Hero Section */
