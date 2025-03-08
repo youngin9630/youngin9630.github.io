@@ -34,7 +34,7 @@ body {
 }
 
 .container {
-  height: calc(100vh - + var(--footer-height));
+  height: calc(100vh - var(--footer-height));
   overflow-y: scroll;
   overflow-x: hidden;
   perspective: 10px;
@@ -44,7 +44,7 @@ body {
 .scroll-container {
   position: relative;
   display: flex;
-  height: calc(100vh - + var(--footer-height));
+  height: calc(100vh - var(--footer-height));
   transform-style: preserve-3d;
   width: 500vw; /* 5 sections * 100vw */
 }
@@ -96,7 +96,7 @@ body {
 .panel {
   position: relative;
   width: 100vw;
-  height: calc(100vh - + var(--footer-height));
+  height: calc(100vh - var(--footer-height));
   display: flex;
   flex-direction: column;
   align-items: center;
