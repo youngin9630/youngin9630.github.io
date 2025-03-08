@@ -7,6 +7,7 @@ const navbar = document.querySelector(".navbar");
 const totalSections = sections.length;
 let currentSection = 0;
 let isScrolling = false;
+let touchStartY = 0;
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -15,13 +16,12 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetId = this.getAttribute("href");
     const targetSection = document.querySelector(targetId);
     const targetIndex = Array.from(sections).indexOf(targetSection);
-
     moveToSection(targetIndex);
   });
 });
 
-// Handle scroll events
-container.addEventListener(
+// Handle mouse wheel events
+window.addEventListener(
   "wheel",
   (e) => {
     e.preventDefault();
@@ -39,11 +39,59 @@ container.addEventListener(
 
       setTimeout(() => {
         isScrolling = false;
-      }, 1000);
+      }, 800);
     }
   },
   { passive: false }
 );
+
+// Handle touch events for mobile
+window.addEventListener("touchstart", (e) => {
+  touchStartY = e.touches[0].clientY;
+});
+
+window.addEventListener("touchmove", (e) => {
+  if (!touchStartY || isScrolling) return;
+
+  const touchEndY = e.touches[0].clientY;
+  const diff = touchStartY - touchEndY;
+
+  if (Math.abs(diff) > 50) {
+    isScrolling = true;
+
+    if (diff > 0 && currentSection < totalSections - 1) {
+      currentSection++;
+    } else if (diff < 0 && currentSection > 0) {
+      currentSection--;
+    }
+
+    moveToSection(currentSection);
+    touchStartY = 0;
+
+    setTimeout(() => {
+      isScrolling = false;
+    }, 800);
+  }
+});
+
+// Handle keyboard events
+window.addEventListener("keydown", (e) => {
+  if (isScrolling) return;
+
+  if (e.key === "ArrowDown" && currentSection < totalSections - 1) {
+    isScrolling = true;
+    currentSection++;
+    moveToSection(currentSection);
+  } else if (e.key === "ArrowUp" && currentSection > 0) {
+    isScrolling = true;
+    currentSection--;
+    moveToSection(currentSection);
+  }
+
+  setTimeout(() => {
+    isScrolling = false;
+  }, 800);
+});
 
 // Move to specific section
 function moveToSection(index) {
