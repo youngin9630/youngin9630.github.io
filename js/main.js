@@ -1,7 +1,16 @@
 // Get DOM elements
 const container = document.querySelector(".container");
+const scrollContainer = document.querySelector(".scroll-container");
 const sections = document.querySelectorAll(".panel");
 const navbar = document.querySelector(".navbar");
+
+let currentSection = 0;
+const totalSections = sections.length;
+
+// Handle scroll events
+let isScrolling = false;
+let startY;
+let scrollProgress = 0;
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -11,47 +20,63 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetSection = document.querySelector(targetId);
     const targetIndex = Array.from(sections).indexOf(targetSection);
 
-    container.scrollTo({
-      left: targetIndex * window.innerWidth,
-      behavior: "smooth",
-    });
+    currentSection = targetIndex;
+    updateScroll();
   });
 });
 
-// Horizontal scroll with vertical scroll input
-let isScrolling = false;
-let currentSection = 0;
-const totalSections = sections.length;
+// Handle wheel events for horizontal scrolling
+window.addEventListener(
+  "wheel",
+  (e) => {
+    e.preventDefault();
 
-container.addEventListener("wheel", (e) => {
-  e.preventDefault();
+    if (!isScrolling) {
+      isScrolling = true;
 
-  if (!isScrolling) {
-    isScrolling = true;
+      if (e.deltaY > 0 && currentSection < totalSections - 1) {
+        currentSection++;
+      } else if (e.deltaY < 0 && currentSection > 0) {
+        currentSection--;
+      }
 
-    if (e.deltaY > 0 && currentSection < totalSections - 1) {
-      // Scroll right
+      updateScroll();
+
+      setTimeout(() => {
+        isScrolling = false;
+      }, 1000);
+    }
+  },
+  { passive: false }
+);
+
+// Handle touch events for mobile
+window.addEventListener("touchstart", (e) => {
+  startY = e.touches[0].clientY;
+});
+
+window.addEventListener("touchmove", (e) => {
+  if (!startY) return;
+
+  const currentY = e.touches[0].clientY;
+  const diff = startY - currentY;
+
+  if (Math.abs(diff) > 50) {
+    // Threshold for touch movement
+    if (diff > 0 && currentSection < totalSections - 1) {
       currentSection++;
-    } else if (e.deltaY < 0 && currentSection > 0) {
-      // Scroll left
+    } else if (diff < 0 && currentSection > 0) {
       currentSection--;
     }
-
-    container.scrollTo({
-      left: currentSection * window.innerWidth,
-      behavior: "smooth",
-    });
-
-    setTimeout(() => {
-      isScrolling = false;
-    }, 1000);
+    startY = null;
+    updateScroll();
   }
 });
 
-// Update active section on scroll
-container.addEventListener("scroll", () => {
-  const scrollPosition = container.scrollLeft;
-  currentSection = Math.round(scrollPosition / window.innerWidth);
+// Update scroll position and navigation
+function updateScroll() {
+  const targetScroll = currentSection * window.innerWidth;
+  scrollContainer.style.transform = `translate3d(${-targetScroll}px, 0, 0)`;
 
   // Update navigation highlight
   document.querySelectorAll(".nav-links a").forEach((link, index) => {
@@ -61,14 +86,11 @@ container.addEventListener("scroll", () => {
       link.style.color = "var(--text-color)";
     }
   });
-});
+}
 
 // Handle window resize
 window.addEventListener("resize", () => {
-  container.scrollTo({
-    left: currentSection * window.innerWidth,
-    behavior: "smooth",
-  });
+  updateScroll();
 });
 
 // Add animation to skill items
