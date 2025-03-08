@@ -24,7 +24,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 // Track scroll position and update horizontal slide
-let lastScrollTop = 0;
 let ticking = false;
 
 window.addEventListener("scroll", () => {
@@ -32,11 +31,16 @@ window.addEventListener("scroll", () => {
     window.requestAnimationFrame(() => {
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop;
+      const documentHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight,
+        document.documentElement.clientHeight
+      );
       const windowHeight = window.innerHeight;
-      const maxScroll = document.documentElement.scrollHeight - windowHeight;
+      const scrollable = documentHeight - windowHeight;
 
       // Calculate the progress (0 to 1)
-      const scrollProgress = scrollTop / maxScroll;
+      const scrollProgress = Math.min(Math.max(scrollTop / scrollable, 0), 1);
 
       // Calculate horizontal movement
       const totalMove = (totalSections - 1) * window.innerWidth;
@@ -46,10 +50,9 @@ window.addEventListener("scroll", () => {
       scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
 
       // Update active section
-      const currentSection = Math.floor(scrollProgress * totalSections);
+      const currentSection = Math.floor(scrollProgress * (totalSections - 1));
       updateActiveSection(currentSection);
 
-      lastScrollTop = scrollTop;
       ticking = false;
     });
 
@@ -71,9 +74,14 @@ function updateActiveSection(currentSection) {
 // Handle window resize
 window.addEventListener("resize", () => {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const documentHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight,
+    document.documentElement.clientHeight
+  );
   const windowHeight = window.innerHeight;
-  const maxScroll = document.documentElement.scrollHeight - windowHeight;
-  const scrollProgress = scrollTop / maxScroll;
+  const scrollable = documentHeight - windowHeight;
+  const scrollProgress = Math.min(Math.max(scrollTop / scrollable, 0), 1);
 
   const totalMove = (totalSections - 1) * window.innerWidth;
   const moveX = totalMove * scrollProgress;

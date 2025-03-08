@@ -13,18 +13,23 @@
   box-sizing: border-box;
 }
 
-html {
+html,
+body {
+  width: 100%;
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
-  overflow-x: hidden;
 }
 
 .container {
+  position: relative;
+  width: 100%;
   height: 500vh; /* 5 sections * 100vh */
 }
 
@@ -36,6 +41,7 @@ body {
   height: 100vh;
   display: flex;
   transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  will-change: transform;
 }
 
 /* Navigation */
