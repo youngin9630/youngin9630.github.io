@@ -15,31 +15,30 @@
 
 html {
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   color: var(--text-color);
+  height: 100vh;
   overflow-x: hidden;
 }
 
 .container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+  height: 500vh; /* 5 sections * 100vh */
+  position: relative;
 }
 
 .scroll-container {
-  position: relative;
-  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 500vw; /* 5 sections * 100vw */
   height: 100vh;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
+  display: flex;
+  transition: transform 0.1s ease-out;
 }
 
 /* Navigation */
