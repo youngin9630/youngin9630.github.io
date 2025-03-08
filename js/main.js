@@ -5,6 +5,8 @@ const sections = document.querySelectorAll(".panel");
 const navbar = document.querySelector(".navbar");
 
 const totalSections = sections.length;
+let currentSection = 0;
+let isScrolling = false;
 
 // Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
@@ -14,56 +16,47 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetSection = document.querySelector(targetId);
     const targetIndex = Array.from(sections).indexOf(targetSection);
 
-    // Scroll to the target section vertically
-    const targetScroll = targetIndex * window.innerHeight;
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "smooth",
-    });
+    moveToSection(targetIndex);
   });
 });
 
-// Track scroll position and update horizontal slide
-let ticking = false;
+// Handle scroll events
+container.addEventListener(
+  "wheel",
+  (e) => {
+    e.preventDefault();
 
-window.addEventListener("scroll", () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
-      const documentHeight = Math.max(
-        document.documentElement.scrollHeight,
-        document.documentElement.offsetHeight,
-        document.documentElement.clientHeight
-      );
-      const windowHeight = window.innerHeight;
-      const scrollable = documentHeight - windowHeight;
+    if (!isScrolling) {
+      isScrolling = true;
 
-      // Calculate the progress (0 to 1)
-      const scrollProgress = Math.min(Math.max(scrollTop / scrollable, 0), 1);
+      if (e.deltaY > 0 && currentSection < totalSections - 1) {
+        currentSection++;
+      } else if (e.deltaY < 0 && currentSection > 0) {
+        currentSection--;
+      }
 
-      // Calculate horizontal movement
-      const totalMove = (totalSections - 1) * window.innerWidth;
-      const moveX = totalMove * scrollProgress;
+      moveToSection(currentSection);
 
-      // Apply smooth transform
-      scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
+      setTimeout(() => {
+        isScrolling = false;
+      }, 1000);
+    }
+  },
+  { passive: false }
+);
 
-      // Update active section
-      const currentSection = Math.floor(scrollProgress * (totalSections - 1));
-      updateActiveSection(currentSection);
-
-      ticking = false;
-    });
-
-    ticking = true;
-  }
-});
+// Move to specific section
+function moveToSection(index) {
+  currentSection = index;
+  const moveX = currentSection * window.innerWidth;
+  scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
+  updateActiveSection(currentSection);
+}
 
 // Update active section in navigation
-function updateActiveSection(currentSection) {
-  document.querySelectorAll(".nav-links a").forEach((link, index) => {
-    if (index === currentSection) {
+function updateActiveSection(index) {
+  document.querySelectorAll(".nav-links a").forEach((link, i) => {
+    if (i === index) {
       link.style.color = "var(--primary-color)";
     } else {
       link.style.color = "var(--text-color)";
@@ -73,20 +66,7 @@ function updateActiveSection(currentSection) {
 
 // Handle window resize
 window.addEventListener("resize", () => {
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const documentHeight = Math.max(
-    document.documentElement.scrollHeight,
-    document.documentElement.offsetHeight,
-    document.documentElement.clientHeight
-  );
-  const windowHeight = window.innerHeight;
-  const scrollable = documentHeight - windowHeight;
-  const scrollProgress = Math.min(Math.max(scrollTop / scrollable, 0), 1);
-
-  const totalMove = (totalSections - 1) * window.innerWidth;
-  const moveX = totalMove * scrollProgress;
-
-  scrollContainer.style.transform = `translate3d(${-moveX}px, 0, 0)`;
+  moveToSection(currentSection);
 });
 
 // Add animation to skill items
