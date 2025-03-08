@@ -244,12 +244,13 @@ section h2 {
 
 /* Footer */
 footer {
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%;
   text-align: center;
   padding: 2rem;
   background-color: var(--light-bg);
+  z-index: 1000;
 }
 
 /* Responsive Design */
