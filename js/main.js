@@ -26,9 +26,13 @@ function updateParallax(scrollPosition) {
   mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
   forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
 
-  // 현재 보이는 화면의 중앙을 기준으로 캐릭터 위치 계산
-  const viewportCenter = window.innerWidth / 2;
-  runningCharacter.style.left = `${viewportCenter}px`;
+  // 현재 스크롤 위치에 따라 캐릭터 위치 계산
+  const totalWidth = window.innerWidth * sections.length;
+  const scrollPercent = scrollPosition / maxScroll;
+  const characterPosition = scrollPercent * (totalWidth - window.innerWidth);
+  runningCharacter.style.left = `${
+    characterPosition + window.innerWidth / 2
+  }px`;
   runningCharacter.style.transform = "translateX(-50%)";
 }
 
