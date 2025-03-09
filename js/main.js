@@ -7,58 +7,28 @@ const mountainMid = document.querySelector(".mountain-mid");
 const forestFront = document.querySelector(".forest-front");
 
 let isScrolling = false;
-let currentSection = 0;
-let scrollAmount = 0;
-const scrollThreshold = 1000; // 섹션 전환을 위한 스크롤 임계값
-const totalSections = sections.length;
-
-// 패럴랙스 효과를 위한 변수
-let lastScrollPosition = 0;
+let currentScroll = 0;
+const maxScroll = (sections.length - 1) * window.innerWidth;
 const parallaxSpeed = {
-  back: 0.3, // 가장 느리게
-  mid: 0.6, // 중간 속도
-  front: 0.9, // 가장 빠르게
+  back: 0.1, // 가장 느리게
+  mid: 0.4, // 중간 속도
+  front: 0.7, // 가장 빠르게
 };
 
 // 스크롤 위치에 따른 배경 이동
 function updateParallax(scrollPosition) {
-  const scrollDiff = scrollPosition - lastScrollPosition;
-
-  // 각 레이어의 현재 X 위치 가져오기
-  const getTranslateX = (element) => {
-    const style = window.getComputedStyle(element);
-    const matrix = new WebKitCSSMatrix(style.transform);
-    return matrix.m41;
-  };
-
-  // 배경 레이어 이동
-  const backX = getTranslateX(mountainBack) - scrollDiff * parallaxSpeed.back;
-  const midX = getTranslateX(mountainMid) - scrollDiff * parallaxSpeed.mid;
-  const frontX = getTranslateX(forestFront) - scrollDiff * parallaxSpeed.front;
+  const backX = -scrollPosition * parallaxSpeed.back;
+  const midX = -scrollPosition * parallaxSpeed.mid;
+  const frontX = -scrollPosition * parallaxSpeed.front;
 
   mountainBack.style.transform = `translateX(${backX}px) translateZ(-10px) scale(2)`;
   mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
   forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
-
-  lastScrollPosition = scrollPosition;
-}
-
-// 섹션 전환 함수
-function goToSection(index) {
-  currentSection = index;
-  const targetScroll = currentSection * window.innerWidth;
-
-  container.scrollTo({
-    left: targetScroll,
-    behavior: "smooth",
-  });
-
-  updateParallax(targetScroll);
-  updateNavigation();
 }
 
 // 네비게이션 상태 업데이트
 function updateNavigation() {
+  const currentSection = Math.round(currentScroll / window.innerWidth);
   document.querySelectorAll(".nav-links a").forEach((link, index) => {
     if (index === currentSection) {
       link.style.color = "var(--primary-color)";
@@ -72,25 +42,18 @@ function updateNavigation() {
 container.addEventListener("wheel", (e) => {
   e.preventDefault();
 
-  if (!isScrolling) {
-    scrollAmount += e.deltaY;
-    updateParallax(container.scrollLeft + e.deltaY);
+  // 현재 스크롤 위치 계산
+  currentScroll = Math.max(0, Math.min(currentScroll + e.deltaY, maxScroll));
 
-    if (Math.abs(scrollAmount) >= scrollThreshold) {
-      isScrolling = true;
+  // 컨테이너 스크롤
+  container.scrollTo({
+    left: currentScroll,
+    behavior: "smooth",
+  });
 
-      if (scrollAmount > 0 && currentSection < totalSections - 1) {
-        goToSection(currentSection + 1);
-      } else if (scrollAmount < 0 && currentSection > 0) {
-        goToSection(currentSection - 1);
-      }
-
-      scrollAmount = 0;
-      setTimeout(() => {
-        isScrolling = false;
-      }, 1000);
-    }
-  }
+  // 패럴랙스 효과 업데이트
+  updateParallax(currentScroll);
+  updateNavigation();
 });
 
 // 네비게이션 링크 클릭 이벤트
@@ -100,18 +63,35 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetId = this.getAttribute("href");
     const targetSection = document.querySelector(targetId);
     const targetIndex = Array.from(sections).indexOf(targetSection);
-    goToSection(targetIndex);
+
+    currentScroll = targetIndex * window.innerWidth;
+    container.scrollTo({
+      left: currentScroll,
+      behavior: "smooth",
+    });
+
+    updateParallax(currentScroll);
+    updateNavigation();
   });
 });
 
-// 창 크기 변경 시 현재 섹션 유지
+// 창 크기 변경 시 현재 위치 유지
 window.addEventListener("resize", () => {
-  goToSection(currentSection);
+  const currentSection = Math.round(currentScroll / window.innerWidth);
+  currentScroll = currentSection * window.innerWidth;
+  maxScroll = (sections.length - 1) * window.innerWidth;
+
+  container.scrollTo({
+    left: currentScroll,
+    behavior: "smooth",
+  });
+
+  updateParallax(currentScroll);
 });
 
 // 터치 이벤트 처리
 let touchStartX = 0;
-let touchEndX = 0;
+let touchMoveX = 0;
 
 container.addEventListener("touchstart", (e) => {
   touchStartX = e.touches[0].clientX;
@@ -119,30 +99,20 @@ container.addEventListener("touchstart", (e) => {
 
 container.addEventListener("touchmove", (e) => {
   e.preventDefault();
-});
+  touchMoveX = e.touches[0].clientX;
+  const diff = touchStartX - touchMoveX;
 
-container.addEventListener("touchend", (e) => {
-  if (!isScrolling) {
-    touchEndX = e.changedTouches[0].clientX;
-    const touchDiff = touchStartX - touchEndX;
+  currentScroll = Math.max(0, Math.min(currentScroll + diff, maxScroll));
 
-    if (Math.abs(touchDiff) >= 50) {
-      // 터치 임계값
-      isScrolling = true;
+  container.scrollTo({
+    left: currentScroll,
+    behavior: "smooth",
+  });
 
-      if (touchDiff > 0 && currentSection < totalSections - 1) {
-        // 왼쪽으로 스와이프
-        goToSection(currentSection + 1);
-      } else if (touchDiff < 0 && currentSection > 0) {
-        // 오른쪽으로 스와이프
-        goToSection(currentSection - 1);
-      }
+  updateParallax(currentScroll);
+  updateNavigation();
 
-      setTimeout(() => {
-        isScrolling = false;
-      }, 1000);
-    }
-  }
+  touchStartX = touchMoveX;
 });
 
 // Add animation to skill items
