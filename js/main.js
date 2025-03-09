@@ -21,12 +21,15 @@ function updateParallax(scrollPosition) {
   const backX = -scrollPosition * parallaxSpeed.back;
   const midX = -scrollPosition * parallaxSpeed.mid;
   const frontX = -scrollPosition * parallaxSpeed.front;
-  const runningCharacterX = -scrollPosition * parallaxSpeed.front;
 
   mountainBack.style.transform = `translateX(${backX}px) translateZ(-10px) scale(2)`;
   mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
   forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
-  runningCharacter.style.transform = `translateX(${runningCharacterX}px)`;
+
+  // 현재 보이는 화면의 중앙을 기준으로 캐릭터 위치 계산
+  const viewportCenter = window.innerWidth / 2;
+  const characterOffset = viewportCenter - 16; // 캐릭터 width의 절반(32px/2)
+  runningCharacter.style.transform = `translateX(calc(${characterOffset}px - 50%))`;
 }
 
 // 네비게이션 상태 업데이트
