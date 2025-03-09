@@ -5,6 +5,7 @@ const navbar = document.querySelector(".navbar");
 const mountainBack = document.querySelector(".mountain-back");
 const mountainMid = document.querySelector(".mountain-mid");
 const forestFront = document.querySelector(".forest-front");
+const runningCharacter = document.querySelector(".running-character");
 
 let isScrolling = false;
 let currentScroll = 0;
@@ -20,10 +21,12 @@ function updateParallax(scrollPosition) {
   const backX = -scrollPosition * parallaxSpeed.back;
   const midX = -scrollPosition * parallaxSpeed.mid;
   const frontX = -scrollPosition * parallaxSpeed.front;
+  const runningCharacterX = -scrollPosition * parallaxSpeed.front;
 
   mountainBack.style.transform = `translateX(${backX}px) translateZ(-10px) scale(2)`;
   mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
   forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
+  runningCharacter.style.transform = `translateX(${runningCharacterX}px)`;
 }
 
 // 네비게이션 상태 업데이트

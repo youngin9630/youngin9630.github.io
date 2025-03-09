@@ -327,11 +327,11 @@ footer {
 .running-character {
   position: absolute;
   bottom: 0;
-  left: 50%;
-  width: 64px;
+  left: 0;
+  width: 32px;
   height: 64px;
   background: url("../images/character-run.gif") no-repeat;
   background-size: contain;
-  transform: translateZ(-2px) scale(1.2);
+  will-change: transform;
   z-index: 2;
 }
