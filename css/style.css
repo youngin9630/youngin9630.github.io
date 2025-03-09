@@ -59,7 +59,6 @@ body {
   height: 100%;
   background: url("../images/mountain-back.png") repeat-x bottom;
   background-size: auto 100%;
-  transform: translateZ(-10px) scale(2);
   will-change: transform;
 }
 
@@ -70,7 +69,6 @@ body {
   height: 100%;
   background: url("../images/mountain-mid.png") repeat-x bottom;
   background-size: auto 100%;
-  transform: translateZ(-5px) scale(1.5);
   will-change: transform;
 }
 
@@ -81,7 +79,6 @@ body {
   height: 100%;
   background: url("../images/forest-front.png") repeat-x bottom;
   background-size: auto 100%;
-  transform: translateZ(-2px) scale(1.2);
   will-change: transform;
 }
 
