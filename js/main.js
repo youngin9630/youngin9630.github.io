@@ -16,6 +16,10 @@ const parallaxSpeed = {
   front: 1, // 가장 빠르게
 };
 
+// 초기 위치 설정
+runningCharacter.style.left = `${window.innerWidth / 2}px`;
+runningCharacter.style.transform = "translateX(-50%)";
+
 // 스크롤 위치에 따른 배경 이동
 function updateParallax(scrollPosition) {
   const backX = -scrollPosition * parallaxSpeed.back;
@@ -102,7 +106,13 @@ window.addEventListener("resize", () => {
     behavior: "smooth",
   });
 
-  updateParallax(currentScroll);
+  // 스크롤이 0일 때는 화면 중앙에 위치
+  if (currentScroll === 0) {
+    runningCharacter.style.left = `${window.innerWidth / 2}px`;
+    runningCharacter.style.transform = "translateX(-50%)";
+  } else {
+    updateParallax(currentScroll);
+  }
 });
 
 // 터치 이벤트 처리
