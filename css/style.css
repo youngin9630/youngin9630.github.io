@@ -327,7 +327,6 @@ footer {
 .running-character {
   position: fixed;
   bottom: 100px;
-  left: 0;
   width: 32px;
   height: 64px;
   background: url("../images/character-run.gif") no-repeat;
@@ -335,4 +334,5 @@ footer {
   will-change: transform;
   z-index: 1000;
   pointer-events: none;
+  transition: left 0.1s linear;
 }

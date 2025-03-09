@@ -28,8 +28,8 @@ function updateParallax(scrollPosition) {
 
   // 현재 보이는 화면의 중앙을 기준으로 캐릭터 위치 계산
   const viewportCenter = window.innerWidth / 2;
-  const characterOffset = viewportCenter - 16; // 캐릭터 width의 절반(32px/2)
-  runningCharacter.style.transform = `translateX(calc(${characterOffset}px - 50%))`;
+  runningCharacter.style.left = `${viewportCenter}px`;
+  runningCharacter.style.transform = "translateX(-50%)";
 }
 
 // 네비게이션 상태 업데이트
