@@ -60,7 +60,7 @@ body {
   background: url("../images/mountain-back.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-10px) scale(2);
-  animation: slide 60s linear infinite;
+  will-change: transform;
 }
 
 .mountain-mid {
@@ -71,7 +71,7 @@ body {
   background: url("../images/mountain-mid.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-5px) scale(1.5);
-  animation: slide 40s linear infinite;
+  will-change: transform;
 }
 
 .forest-front {
@@ -82,16 +82,7 @@ body {
   background: url("../images/forest-front.png") repeat-x bottom;
   background-size: auto 100%;
   transform: translateZ(-2px) scale(1.2);
-  animation: slide 20s linear infinite;
-}
-
-@keyframes slide {
-  from {
-    background-position: 0 bottom;
-  }
-  to {
-    background-position: -1920px bottom;
-  }
+  will-change: transform;
 }
 
 .scroll-container {

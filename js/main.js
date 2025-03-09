@@ -2,6 +2,9 @@
 const container = document.querySelector(".container");
 const sections = document.querySelectorAll(".panel");
 const navbar = document.querySelector(".navbar");
+const mountainBack = document.querySelector(".mountain-back");
+const mountainMid = document.querySelector(".mountain-mid");
+const forestFront = document.querySelector(".forest-front");
 
 let isScrolling = false;
 let currentSection = 0;
@@ -9,13 +12,48 @@ let scrollAmount = 0;
 const scrollThreshold = 1000; // 섹션 전환을 위한 스크롤 임계값
 const totalSections = sections.length;
 
+// 패럴랙스 효과를 위한 변수
+let lastScrollPosition = 0;
+const parallaxSpeed = {
+  back: 0.3, // 가장 느리게
+  mid: 0.6, // 중간 속도
+  front: 0.9, // 가장 빠르게
+};
+
+// 스크롤 위치에 따른 배경 이동
+function updateParallax(scrollPosition) {
+  const scrollDiff = scrollPosition - lastScrollPosition;
+
+  // 각 레이어의 현재 X 위치 가져오기
+  const getTranslateX = (element) => {
+    const style = window.getComputedStyle(element);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    return matrix.m41;
+  };
+
+  // 배경 레이어 이동
+  const backX = getTranslateX(mountainBack) - scrollDiff * parallaxSpeed.back;
+  const midX = getTranslateX(mountainMid) - scrollDiff * parallaxSpeed.mid;
+  const frontX = getTranslateX(forestFront) - scrollDiff * parallaxSpeed.front;
+
+  mountainBack.style.transform = `translateX(${backX}px) translateZ(-10px) scale(2)`;
+  mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
+  forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
+
+  lastScrollPosition = scrollPosition;
+}
+
 // 섹션 전환 함수
 function goToSection(index) {
   currentSection = index;
+  const targetScroll = currentSection * window.innerWidth;
+
   container.scrollTo({
-    left: currentSection * window.innerWidth,
+    left: targetScroll,
     behavior: "smooth",
   });
+
+  updateParallax(targetScroll);
   updateNavigation();
 }
 
@@ -36,23 +74,18 @@ container.addEventListener("wheel", (e) => {
 
   if (!isScrolling) {
     scrollAmount += e.deltaY;
+    updateParallax(container.scrollLeft + e.deltaY);
 
-    // 스크롤 양이 임계값을 넘으면 섹션 전환
     if (Math.abs(scrollAmount) >= scrollThreshold) {
       isScrolling = true;
 
       if (scrollAmount > 0 && currentSection < totalSections - 1) {
-        // 아래로 스크롤
         goToSection(currentSection + 1);
       } else if (scrollAmount < 0 && currentSection > 0) {
-        // 위로 스크롤
         goToSection(currentSection - 1);
       }
 
-      // 스크롤 양 초기화
       scrollAmount = 0;
-
-      // 스크롤 잠금 해제
       setTimeout(() => {
         isScrolling = false;
       }, 1000);
