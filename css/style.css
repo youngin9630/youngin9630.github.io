@@ -326,7 +326,7 @@ footer {
 
 .running-character {
   position: fixed;
-  bottom: 5%;
+  bottom: 8%;
   width: 32px;
   height: 64px;
   background: url("../images/character-run.gif") no-repeat;
