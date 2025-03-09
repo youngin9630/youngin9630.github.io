@@ -6,7 +6,7 @@ const navbar = document.querySelector(".navbar");
 let isScrolling = false;
 let currentSection = 0;
 let scrollAmount = 0;
-const scrollThreshold = 100; // 섹션 전환을 위한 스크롤 임계값
+const scrollThreshold = 1000; // 섹션 전환을 위한 스크롤 임계값
 const totalSections = sections.length;
 
 // 섹션 전환 함수
