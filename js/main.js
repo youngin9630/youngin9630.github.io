@@ -30,17 +30,7 @@ function updateParallax(scrollPosition) {
   mountainMid.style.transform = `translateX(${midX}px) translateZ(-5px) scale(1.5)`;
   forestFront.style.transform = `translateX(${frontX}px) translateZ(-2px) scale(1.2)`;
 
-  // 현재 스크롤 위치에 따라 캐릭터 위치 계산
-  const currentSectionIndex = currentScroll / window.innerWidth;
-  const sectionProgress = currentSectionIndex % 1;
-  const currentSection = Math.floor(currentSectionIndex);
-  const nextSection = Math.min(currentSection + 1, sections.length - 1);
-
-  // 현재 섹션과 다음 섹션 사이의 위치를 계산
-  const sectionWidth = window.innerWidth;
-  const startX = currentSection * sectionWidth;
-  const endX = nextSection * sectionWidth;
-  const characterX = startX + (endX - startX) * sectionProgress;
+  const characterX = window.innerWidth / 2 + currentScroll;
 
   runningCharacter.style.left = `${characterX}px`;
   runningCharacter.style.transform = "translateX(-50%)";
