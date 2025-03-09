@@ -9,7 +9,12 @@ const runningCharacter = document.querySelector(".running-character");
 
 let isScrolling = false;
 let currentScroll = 0;
-const maxScroll = (sections.length - 1) * window.innerWidth;
+
+// maxScroll을 함수로 변경하여 항상 최신 값을 반환하도록 수정
+function getMaxScroll() {
+  return (sections.length - 1) * window.innerWidth;
+}
+
 const parallaxSpeed = {
   back: 0.1, // 가장 느리게
   mid: 0.3, // 중간 속도
@@ -52,8 +57,11 @@ function updateNavigation() {
 container.addEventListener("wheel", (e) => {
   e.preventDefault();
 
-  // 현재 스크롤 위치 계산
-  currentScroll = Math.max(0, Math.min(currentScroll + e.deltaY, maxScroll));
+  // 현재 스크롤 위치 계산 (maxScroll 함수 사용)
+  currentScroll = Math.max(
+    0,
+    Math.min(currentScroll + e.deltaY, getMaxScroll())
+  );
 
   // 컨테이너 스크롤
   container.scrollTo({
@@ -66,7 +74,7 @@ container.addEventListener("wheel", (e) => {
   updateNavigation();
 });
 
-// 네비게이션 링크 클릭 이벤트
+// 네비게이션 링크 클릭 이벤트도 수정
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (e) {
     e.preventDefault();
@@ -74,7 +82,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const targetSection = document.querySelector(targetId);
     const targetIndex = Array.from(sections).indexOf(targetSection);
 
-    currentScroll = targetIndex * window.innerWidth;
+    currentScroll = Math.min(targetIndex * window.innerWidth, getMaxScroll());
     container.scrollTo({
       left: currentScroll,
       behavior: "smooth",
@@ -85,11 +93,10 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   });
 });
 
-// 창 크기 변경 시 현재 위치 유지
+// 창 크기 변경 시 현재 위치 유지도 수정
 window.addEventListener("resize", () => {
   const currentSection = Math.round(currentScroll / window.innerWidth);
-  currentScroll = currentSection * window.innerWidth;
-  maxScroll = (sections.length - 1) * window.innerWidth;
+  currentScroll = Math.min(currentSection * window.innerWidth, getMaxScroll());
 
   container.scrollTo({
     left: currentScroll,
@@ -105,7 +112,7 @@ window.addEventListener("resize", () => {
   }
 });
 
-// 터치 이벤트 처리
+// 터치 이벤트 처리도 수정
 let touchStartX = 0;
 let touchMoveX = 0;
 
@@ -118,7 +125,7 @@ container.addEventListener("touchmove", (e) => {
   touchMoveX = e.touches[0].clientX;
   const diff = touchStartX - touchMoveX;
 
-  currentScroll = Math.max(0, Math.min(currentScroll + diff, maxScroll));
+  currentScroll = Math.max(0, Math.min(currentScroll + diff, getMaxScroll()));
 
   container.scrollTo({
     left: currentScroll,
