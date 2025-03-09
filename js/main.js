@@ -12,7 +12,7 @@ const maxScroll = (sections.length - 1) * window.innerWidth;
 const parallaxSpeed = {
   back: 0.1, // 가장 느리게
   mid: 0.3, // 중간 속도
-  front: 0.8, // 가장 빠르게
+  front: 1, // 가장 빠르게
 };
 
 // 스크롤 위치에 따른 배경 이동

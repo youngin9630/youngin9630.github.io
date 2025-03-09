@@ -47,7 +47,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 500vw;
+  width: 600vw;
   height: 100%;
   transform-style: preserve-3d;
 }
@@ -55,7 +55,8 @@ body {
 .mountain-back {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 200%;
   height: 100%;
   background: url("../images/mountain-back.png") repeat-x bottom;
   background-size: auto 100%;
@@ -65,7 +66,8 @@ body {
 .mountain-mid {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 200%;
   height: 100%;
   background: url("../images/mountain-mid.png") repeat-x bottom;
   background-size: auto 100%;
@@ -75,7 +77,8 @@ body {
 .forest-front {
   position: absolute;
   bottom: 0;
-  width: 100%;
+  left: 0;
+  width: 200%;
   height: 100%;
   background: url("../images/forest-front.png") repeat-x bottom;
   background-size: auto 100%;
