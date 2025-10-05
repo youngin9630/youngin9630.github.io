@@ -11,7 +11,7 @@ const ParallaxBackground: React.FC = () => {
           src="/mountain-back.png"
           alt="Mountain background"
           fill
-          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+          style={{ objectFit: "cover", objectPosition: "bottom", width: "100%", height: "100%" }}
           priority
         />
       </div>
@@ -20,7 +20,7 @@ const ParallaxBackground: React.FC = () => {
           src="/mountain-mid.png"
           alt="Mountain middle"
           fill
-          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+          style={{ objectFit: "cover", objectPosition: "bottom", width: "100%", height: "100%" }}
           priority
         />
       </div>
@@ -29,7 +29,7 @@ const ParallaxBackground: React.FC = () => {
           src="/forest-front.png"
           alt="Forest front"
           fill
-          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
+          style={{ objectFit: "cover", objectPosition: "bottom", width: "100%", height: "100%" }}
           priority
         />
       </div>
