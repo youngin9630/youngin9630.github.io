@@ -8,28 +8,28 @@ const ParallaxBackground: React.FC = () => {
     <div className="parallax-bg">
       <div className="mountain-back">
         <Image
-          src="/images/mountain-back.png"
+          src="/mountain-back.png"
           alt="Mountain background"
           fill
-          className="object-cover object-bottom"
+          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           priority
         />
       </div>
       <div className="mountain-mid">
         <Image
-          src="/images/mountain-mid.png"
+          src="/mountain-mid.png"
           alt="Mountain middle"
           fill
-          className="object-cover object-bottom"
+          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           priority
         />
       </div>
       <div className="forest-front">
         <Image
-          src="/images/forest-front.png"
+          src="/forest-front.png"
           alt="Forest front"
           fill
-          className="object-cover object-bottom"
+          style={{ objectFit: 'cover', objectPosition: 'bottom' }}
           priority
         />
       </div>
@@ -38,4 +38,3 @@ const ParallaxBackground: React.FC = () => {
 };
 
 export default ParallaxBackground;
-

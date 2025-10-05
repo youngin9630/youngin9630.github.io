@@ -7,11 +7,11 @@ const RunningCharacter: React.FC = () => {
   return (
     <div className="running-character">
       <Image
-        src="/images/character-run.gif"
+        src="/character-run.gif"
         alt="Running character"
         width={32}
         height={64}
-        className="object-contain"
+        style={{ objectFit: 'contain' }}
         priority
       />
     </div>
