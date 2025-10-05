@@ -50,7 +50,7 @@ const Skills: React.FC = () => {
             {frontendSkills.map((skill, index) => (
               <li
                 key={skill}
-                ref={(el) => (skillItemsRef.current[index] = el)}
+                ref={(el) => { skillItemsRef.current[index] = el; }}
                 className="mb-2 p-2 bg-light rounded"
               >
                 {skill}
@@ -64,9 +64,9 @@ const Skills: React.FC = () => {
             {toolsSkills.map((skill, index) => (
               <li
                 key={skill}
-                ref={(el) =>
-                  (skillItemsRef.current[frontendSkills.length + index] = el)
-                }
+                ref={(el) => {
+                  skillItemsRef.current[frontendSkills.length + index] = el;
+                }}
                 className="mb-2 p-2 bg-light rounded"
               >
                 {skill}

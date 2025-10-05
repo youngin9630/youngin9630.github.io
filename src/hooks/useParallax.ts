@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 interface ParallaxConfig {
   back: number;
@@ -19,12 +19,12 @@ export const useParallax = (sectionsLength: number) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const getMaxScroll = () => {
+  const getMaxScroll = useCallback(() => {
     if (typeof window === "undefined") return 0;
     return (sectionsLength - 1) * window.innerWidth;
-  };
+  }, [sectionsLength]);
 
-  const updateParallax = (scrollPosition: number) => {
+  const updateParallax = useCallback((scrollPosition: number) => {
     const backX = -scrollPosition * parallaxSpeed.back;
     const midX = -scrollPosition * parallaxSpeed.mid;
     const frontX = -scrollPosition * parallaxSpeed.front;
@@ -53,9 +53,9 @@ export const useParallax = (sectionsLength: number) => {
       runningCharacter.style.left = `${characterX}px`;
       runningCharacter.style.transform = "translateX(-50%)";
     }
-  };
+  }, []);
 
-  const updateNavigation = () => {
+  const updateNavigation = useCallback(() => {
     const currentSection = Math.round(currentScroll / window.innerWidth);
     document.querySelectorAll(".nav-links a").forEach((link, index) => {
       const linkElement = link as HTMLElement;
@@ -65,9 +65,9 @@ export const useParallax = (sectionsLength: number) => {
         linkElement.style.color = "var(--text-color)";
       }
     });
-  };
+  }, [currentScroll]);
 
-  const scrollToSection = (sectionIndex: number) => {
+  const scrollToSection = useCallback((sectionIndex: number) => {
     const newScroll = Math.min(
       sectionIndex * window.innerWidth,
       getMaxScroll()
@@ -83,9 +83,9 @@ export const useParallax = (sectionsLength: number) => {
 
     updateParallax(newScroll);
     updateNavigation();
-  };
+  }, [getMaxScroll, updateParallax, updateNavigation]);
 
-  const handleWheel = (e: WheelEvent) => {
+  const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
 
     const newScroll = Math.max(
@@ -104,16 +104,16 @@ export const useParallax = (sectionsLength: number) => {
 
     updateParallax(newScroll);
     updateNavigation();
-  };
+  }, [currentScroll, getMaxScroll, updateParallax, updateNavigation]);
 
-  const handleTouchStart = (e: TouchEvent) => {
+  const handleTouchStart = useCallback((e: TouchEvent) => {
     setIsScrolling(true);
-  };
+  }, []);
 
-  const handleTouchMove = (e: TouchEvent) => {
-    e.preventDefault();
+  const handleTouchMove = useCallback((_e: TouchEvent) => {
+    _e.preventDefault();
     // 터치 로직은 별도로 구현
-  };
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -138,7 +138,7 @@ export const useParallax = (sectionsLength: number) => {
       container.removeEventListener("touchstart", handleTouchStart);
       container.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [currentScroll]);
+  }, [currentScroll, handleWheel, handleTouchStart, handleTouchMove]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -173,7 +173,7 @@ export const useParallax = (sectionsLength: number) => {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [currentScroll]);
+  }, [currentScroll, getMaxScroll, updateParallax]);
 
   return {
     currentScroll,
