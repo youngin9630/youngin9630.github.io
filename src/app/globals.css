@@ -1,26 +1,149 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+/* Global Styles */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-color: #2563eb;
+  --secondary-color: #1e40af;
+  --text-color: #1f2937;
+  --light-bg: #f3f4f6;
+  --white: #ffffff;
+  --navbar-height: 70px;
+  --footer-height: 90px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  height: 100%;
+  perspective: 1px;
+  transform-style: preserve-3d;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background: linear-gradient(to bottom, #87ceeb, #e0f4ff);
+}
+
+.container {
+  height: calc(100vh - var(--footer-height));
+  overflow-x: hidden;
+  overflow-y: hidden;
+  perspective: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.parallax-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 600vw;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.mountain-back {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url("/images/mountain-back.png") repeat-x bottom;
+  background-size: auto 100%;
+  will-change: transform;
+}
+
+.mountain-mid {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url("/images/mountain-mid.png") repeat-x bottom;
+  background-size: auto 100%;
+  will-change: transform;
+}
+
+.forest-front {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: url("/images/forest-front.png") repeat-x bottom;
+  background-size: auto 100%;
+  will-change: transform;
+}
+
+.scroll-container {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  width: 500vw; /* 5 sections * 100vw */
+  display: flex;
+}
+
+/* Panels */
+.panel {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 20px;
+  margin: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+/* Sections */
+section {
+  padding: 5rem 2rem;
+}
+
+section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+/* Footer */
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--light-bg);
+  z-index: 1000;
+}
+
+.running-character {
+  position: fixed;
+  bottom: 7%;
+  width: 32px;
+  height: 64px;
+  background: url("/images/character-run.gif") no-repeat;
+  background-size: contain;
+  will-change: transform;
+  z-index: 1000;
+  pointer-events: none;
+  transition: left 0.1s linear;
 }
