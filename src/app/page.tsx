@@ -8,6 +8,7 @@ import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Contact from "@/components/Contact";
 import ParallaxBackground from "@/components/ParallaxBackground";
+import RunningCharacter from "@/components/RunningCharacter";
 import { useParallax } from "@/hooks/useParallax";
 
 export default function Home() {
@@ -32,7 +33,7 @@ export default function Home() {
 
       <div className="container" ref={containerRef}>
         <ParallaxBackground />
-        <div className="running-character"></div>
+        <RunningCharacter />
 
         <div className="scroll-container">
           <Hero onContactClick={handleContactClick} />

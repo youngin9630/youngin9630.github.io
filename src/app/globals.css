@@ -62,8 +62,6 @@ body {
   left: 0;
   width: 200%;
   height: 100%;
-  background: url("/images/mountain-back.png") repeat-x bottom;
-  background-size: auto 100%;
   will-change: transform;
 }
 
@@ -73,8 +71,6 @@ body {
   left: 0;
   width: 200%;
   height: 100%;
-  background: url("/images/mountain-mid.png") repeat-x bottom;
-  background-size: auto 100%;
   will-change: transform;
 }
 
@@ -84,8 +80,6 @@ body {
   left: 0;
   width: 200%;
   height: 100%;
-  background: url("/images/forest-front.png") repeat-x bottom;
-  background-size: auto 100%;
   will-change: transform;
 }
 
@@ -140,8 +134,6 @@ footer {
   bottom: 7%;
   width: 32px;
   height: 64px;
-  background: url("/images/character-run.gif") no-repeat;
-  background-size: contain;
   will-change: transform;
   z-index: 1000;
   pointer-events: none;
