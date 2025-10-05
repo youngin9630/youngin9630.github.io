@@ -67,44 +67,50 @@ export const useParallax = (sectionsLength: number) => {
     });
   }, [currentScroll]);
 
-  const scrollToSection = useCallback((sectionIndex: number) => {
-    const newScroll = Math.min(
-      sectionIndex * window.innerWidth,
-      getMaxScroll()
-    );
-    setCurrentScroll(newScroll);
+  const scrollToSection = useCallback(
+    (sectionIndex: number) => {
+      const newScroll = Math.min(
+        sectionIndex * window.innerWidth,
+        getMaxScroll()
+      );
+      setCurrentScroll(newScroll);
 
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        left: newScroll,
-        behavior: "smooth",
-      });
-    }
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          left: newScroll,
+          behavior: "smooth",
+        });
+      }
 
-    updateParallax(newScroll);
-    updateNavigation();
-  }, [getMaxScroll, updateParallax, updateNavigation]);
+      updateParallax(newScroll);
+      updateNavigation();
+    },
+    [getMaxScroll, updateParallax, updateNavigation]
+  );
 
-  const handleWheel = useCallback((e: WheelEvent) => {
-    e.preventDefault();
+  const handleWheel = useCallback(
+    (e: WheelEvent) => {
+      e.preventDefault();
 
-    const newScroll = Math.max(
-      0,
-      Math.min(currentScroll + e.deltaY, getMaxScroll())
-    );
+      const newScroll = Math.max(
+        0,
+        Math.min(currentScroll + e.deltaY, getMaxScroll())
+      );
 
-    setCurrentScroll(newScroll);
+      setCurrentScroll(newScroll);
 
-    if (containerRef.current) {
-      containerRef.current.scrollTo({
-        left: newScroll,
-        behavior: "smooth",
-      });
-    }
+      if (containerRef.current) {
+        containerRef.current.scrollTo({
+          left: newScroll,
+          behavior: "smooth",
+        });
+      }
 
-    updateParallax(newScroll);
-    updateNavigation();
-  }, [currentScroll, getMaxScroll, updateParallax, updateNavigation]);
+      updateParallax(newScroll);
+      updateNavigation();
+    },
+    [currentScroll, getMaxScroll, updateParallax, updateNavigation]
+  );
 
   const handleTouchStart = useCallback((e: TouchEvent) => {
     setIsScrolling(true);
@@ -184,4 +190,3 @@ export const useParallax = (sectionsLength: number) => {
     updateNavigation,
   };
 };
-
