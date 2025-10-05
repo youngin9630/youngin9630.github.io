@@ -15,7 +15,7 @@ const ParallaxBackground: React.FC = () => {
           alt="Mountain background"
           fill
           style={{
-            objectFit: "cover",
+            objectFit: "contain",
             objectPosition: "bottom",
             width: "100%",
             height: "100%",
@@ -29,7 +29,7 @@ const ParallaxBackground: React.FC = () => {
           alt="Mountain middle"
           fill
           style={{
-            objectFit: "cover",
+            objectFit: "contain",
             objectPosition: "bottom",
             width: "100%",
             height: "100%",
@@ -43,7 +43,7 @@ const ParallaxBackground: React.FC = () => {
           alt="Forest front"
           fill
           style={{
-            objectFit: "cover",
+            objectFit: "contain",
             objectPosition: "bottom",
             width: "100%",
             height: "100%",
